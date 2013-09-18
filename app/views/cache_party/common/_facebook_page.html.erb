@@ -1,0 +1,23 @@
+
+<% r = r.decorate %>
+
+<div class="row">
+  <div class="span3">
+    <table>
+      <tr><td><%# image_tag r.picture if r.pictrue %></td></tr>
+      <tr><td><b>facebook id:</b></td><td><%= r.facebook_id %></td></tr>
+      <tr><td><b>facebook url:</b></td><td><%= r.url %></td></tr>
+      <tr><td><b>created:</b></td><td><%= r.created_at %></td></tr>
+      <tr><td><b>updated:</b></td><td><%= r.updated_at %></td></tr>
+    </table>
+  </div>
+  <div class="span6">
+    <table>
+      <tr><td><b>cover:</b></td></tr>
+      <tr><td><%# image_tag r.cover_source if r.picture %></td></tr>
+      <tr><td><b>about:</b></td></tr>
+      <tr><td><%= r.about %></td></tr>
+    </table>
+  </div>
+</div>
+

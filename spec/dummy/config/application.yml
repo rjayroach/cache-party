@@ -1,0 +1,23 @@
+
+development:
+  app_name: Development
+  smtp_settings:
+    address: smtp.gmail.com
+    port: 587
+    user_name: user@domain.com
+    password: super_secret_password
+    authentication: plain
+    enable_starttls_auto: true
+  mcp_pbx:
+    call_report:
+      mail_to: support@maxcole.com, robert.roach@maxcole.com
+  asset_dir: cache/facebook
+
+test:
+  app_name: mcpa
+  asset_dir: test/cache/facebook
+
+production:
+  app_name: Change Me
+  relative_url: mcp
+

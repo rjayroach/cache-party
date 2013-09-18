@@ -1,0 +1,19 @@
+# Read about factories at https://github.com/thoughtbot/factory_girl
+
+module CacheParty
+  FactoryGirl.define do
+    factory :cache_party_facebook_application, class: FacebookApplication do
+      facebook_id "MyString"
+      key "MyString"
+      token "MyString"
+      permissions "MyString"
+
+      trait :maximum_cole do
+        facebook_id 'FACEBOOK APP ID'
+        key 'FACEBOOK APP KEY'
+        permissions "email, publish_stream"
+      end
+    end
+  end
+end
+

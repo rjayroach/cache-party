@@ -1,0 +1,15 @@
+
+<% r = r.decorate %>
+
+<div class="row">
+  <div class="span3">
+    <table>
+      <tr><td><%# image_tag r.picture if r.picture %></td></tr>
+      <tr><td><b>facebook id:</b></td><td><%= r.facebook_id %></td></tr>
+      <tr><td><b>facebook username:</b></td><td><%= r.username %></td></tr>
+      <tr><td><b>created:</b></td><td><%= r.created_at %></td></tr>
+      <tr><td><b>updated:</b></td><td><%= r.updated_at %></td></tr>
+    </table>
+  </div>
+</div>
+
