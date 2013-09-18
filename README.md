@@ -1,13 +1,14 @@
-= CacheParty
+# CacheParty
 
-This project rocks and uses MIT-LICENSE.
+Provides a cache to 3rd party website content such as Facebook user and page data and assets
 
 # Dependencies
 
-McpAuth to provide authentication and so on
+Depends on DRYAuth to provide authentication
 
-Provides a cache to 3rd party website content
 
-Facebook
+# Support 3rd Parties
+
+- Facebook
 
 
