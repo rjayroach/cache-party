@@ -1,1 +1,10 @@
-*/spec/factories/cache_party/facebook_applications.rb
+spec/factories/cache_party/facebook_applications.rb
+.bundle/
+log/*.log
+pkg/
+spec/dummy/db/*.sqlite3
+spec/dummy/db/migrate/
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/.sass-cache
+

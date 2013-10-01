@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "cache_party"
   s.version     = CacheParty::VERSION
   s.authors     = ["Robert Roach"]
-  s.email       = ["robert.roach@maxcole.com"]
+  s.email       = ["rjayroach@gmail.com"]
   s.homepage    = "http://www.maxcole.com"
   s.summary     = "A plugable engine for an Mcp App"
   s.description = "No Description."
