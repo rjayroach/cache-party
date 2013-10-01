@@ -1,5 +1,4 @@
 
-# change for git
 #
 # 3rd party libraries
 require 'celluloid'
