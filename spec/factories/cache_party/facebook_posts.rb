@@ -5,7 +5,10 @@ module CacheParty
     factory :cache_party_facebook_post, class: FacebookPost do
       contentable nil
       association :postable, factory: :cache_party_facebook_user
-      association :authorizable, factory: [:mcp_auth_auth_profile, :dave_tone_facebook]
+
+      after :build do |facebook_post, evaluator|
+        facebook_post.authorizable =  build(:mcp_auth_auth_profile, :dave_tone_facebook, user: facebook_post.postable.user)
+      end
       #association :authorizable, factory: [:cache_party_facebook_application, :maximum_cole]
       #now
   
