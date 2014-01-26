@@ -13,7 +13,7 @@ module CacheParty
         # Return the directory where assets are saved locally
         #
         it "returns the default view path" do
-          expect(APPLICATION_CONFIG['view_path']).to eq('test/cache/facebook')
+          expect(APPLICATION_CONFIG['view_path']).to eq('/test/cache/facebook')
         end
   
         # 

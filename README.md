@@ -1,16 +1,16 @@
 # CacheParty
 
-From branch new
+CacheParty provides queue mechanism to support caching of 3rd party content such as Facebook user and page data and assets.
+CacheParty currently supports caching of:
 
-Provides a cache to 3rd party website content such as Facebook user and page data and assets
+* Facebook
 
-# Dependencies
+## Dependencies
 
-Depends on DRYAuth to provide authentication
+* User [DryAuth](https://github.com/rjayroach/dry-auth)
 
 
-# Support 3rd Parties
+## Getting Started
 
-- Facebook
 
 

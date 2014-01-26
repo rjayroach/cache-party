@@ -38,6 +38,7 @@ module CacheParty
     describe "scopes" do
     end
 
+=begin
     describe "#post" do
       it "posts the content to a Facebook Object" do
         SuckerPunch::Queue.any_instance.stub(:perform).and_return(true)
@@ -54,6 +55,7 @@ module CacheParty
         #subject.content = "hello world!"
         #subject.post
     end
+=end
 
 
   end

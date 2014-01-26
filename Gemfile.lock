@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rjayroach/dry-auth
-  revision: c06ab99e80c424fec3614d8bc6aeddc78b7757bb
+  revision: 5eb16c20a1bc8c2ee7c6901511e04e1d2225d82b
   branch: master
   specs:
     dry_auth (0.13.0)
@@ -12,18 +12,10 @@ GIT
       rails (~> 3.2.14)
       rolify (~> 3.3.0.rc3)
 
-PATH
-  remote: .
-  specs:
-    cache_party (0.13.0)
-      dry_auth
-      koala
-      mcp_common
-      rails (~> 3.2.13)
-      sucker_punch (~> 1.0.0)
-
-PATH
-  remote: /home/maxpub/dev/engines/mcp_common
+GIT
+  remote: https://github.com/rjayroach/mcp_common
+  revision: 01773ae9c1a251bcc2e35ad66fe5be9c377a0e9b
+  branch: master
   specs:
     mcp_common (0.14.3)
       bootstrap-sass (= 2.3.2.2)
@@ -42,6 +34,16 @@ PATH
       sucker_punch (~> 1.0.0)
       whenever
       will_paginate (>= 3.0.3)
+
+PATH
+  remote: .
+  specs:
+    cache_party (0.13.0)
+      dry_auth
+      koala
+      mcp_common
+      rails (~> 3.2.13)
+      sucker_punch (~> 1.0.0)
 
 GEM
   remote: http://rubygems.org/

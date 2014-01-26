@@ -19,7 +19,7 @@ gem "jquery-rails"
 # gem 'debugger'
 #
 
-gem "mcp_common", :path => "/home/maxpub/dev/engines/mcp_common"
+gem "mcp_common", git: 'https://github.com/rjayroach/mcp_common', branch: 'master' 
 gem "dry_auth", git: 'https://github.com/rjayroach/dry-auth', branch: 'master'
 
 
