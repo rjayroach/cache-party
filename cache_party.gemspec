@@ -9,11 +9,11 @@ Gem::Specification.new do |s|
   s.version     = CacheParty::VERSION
   s.authors     = ["Robert Roach"]
   s.email       = ["rjayroach@gmail.com"]
-  s.homepage    = "http://www.maxcole.com"
-  s.summary     = "A plugable engine for an Mcp App"
-  s.description = "No Description."
+  s.homepage    = "http://rjayroach.github.io"
+  s.summary     = "Cache 3rd party data and assets"
+  s.description = "Transparently cache data from 3rd party websites, such as Facebook and link to a user model"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 3.2.13"
   s.add_dependency "koala"
