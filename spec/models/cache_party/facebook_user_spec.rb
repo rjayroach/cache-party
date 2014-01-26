@@ -17,7 +17,7 @@ require 'spec_helper'
 module CacheParty
   describe FacebookUser do
 
-    subject { build(:cache_party_facebook_user, :davetone_basic) }
+    subject { build(:cache_party_facebook_user) }
 
     it "has a valid factory" do
       expect(subject).to be_valid

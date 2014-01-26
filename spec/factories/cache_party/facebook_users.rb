@@ -10,14 +10,10 @@ module CacheParty
   FactoryGirl.define do
     factory :cache_party_facebook_user, class: FacebookUser do
       username "dave.tone.31"
+      facebook_id "100005787840155"
       association :user, factory: :mcp_auth_user
       #davetone
       #picture nil
-
-      trait :davetone_basic do
-        facebook_id "100005787840155"
-        #username "dave.tone.31"
-      end
 
 
       trait :davetone do

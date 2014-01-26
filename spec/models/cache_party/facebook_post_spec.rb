@@ -40,7 +40,12 @@ module CacheParty
 
     describe "#post" do
       it "posts the content to a Facebook Object" do
-        expect{ subject.post }.to change{ SuckerPunch::Queue.new(:FacebookPost).jobs.size }.by(1)
+        SuckerPunch::Queue.any_instance.stub(:perform).and_return(true)
+        #SuckerPunch::Queue.stub(:new).with('')
+        subject.post
+        expect( SuckerPunch::Queue.any_instance).to have_received(:new).once
+        #expect(invitation).to have_received(:accept).twice
+        #expect{ subject.post }.to change{ SuckerPunch::Queue.new(:FacebookPost).jobs.size }.by(1)
       end
         #auth_provider = create(:mcp_auth_auth_profile, :dave_tone_facebook)
         #post_for = create(:cache_party_facebook_user)
