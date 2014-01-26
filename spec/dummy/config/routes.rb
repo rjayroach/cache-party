@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
 
   mount CacheParty::Engine => "/cache_party"
-  mount McpAuth::Engine => '/auth'
+  mount DryAuth::Engine => '/auth'
   mount McpCommon::Engine => '/common'
   root to: McpCommon::Engine
 

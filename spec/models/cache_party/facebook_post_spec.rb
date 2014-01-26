@@ -47,7 +47,7 @@ module CacheParty
         #expect(invitation).to have_received(:accept).twice
         #expect{ subject.post }.to change{ SuckerPunch::Queue.new(:FacebookPost).jobs.size }.by(1)
       end
-        #auth_provider = create(:mcp_auth_auth_profile, :dave_tone_facebook)
+        #auth_provider = create(:dry_auth_auth_profile, :dave_tone_facebook)
         #post_for = create(:cache_party_facebook_user)
         #subject.authorizable = auth_provider
         #subject.postable = post_for

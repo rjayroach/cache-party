@@ -25,7 +25,7 @@ module CacheParty
 
 
     describe "Validations" do
-      # NOTE the test for user should be removed when the model is fully decoupled from McpAuth
+      # NOTE the test for user should be removed when the model is fully decoupled from DryAuth
       #%w().each do |attr|
       %w(user).each do |attr|
         it "requires #{attr}" do
@@ -37,7 +37,7 @@ module CacheParty
 
       it "fails to create a duplicate username" do
         subject.save
-        dup = build(:cache_party_facebook_user, :davetone_basic)
+        dup = build(:cache_party_facebook_user) #, :davetone_basic)
         expect(dup).to_not be_valid
       end
 

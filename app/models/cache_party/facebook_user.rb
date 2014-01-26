@@ -9,15 +9,15 @@ module CacheParty
     def update_cache; update_cache_on_create; end
 
 
-    # todo user need not be present; this is tight coupling to McpAuth
-    # See initializer that sets up the other side of the association for McpAuth::User
+    # todo user need not be present; this is tight coupling to DryAuth
+    # See initializer that sets up the other side of the association for DryAuth::User
     # NOTE this should be removed when full testing has been done as well as the initializer
-    belongs_to :user, class_name: "McpAuth::User"
+    belongs_to :user, class_name: "DryAuth::User"
 
     # The object which holds this model as a cached object which will be automatically updated when cached data is received
     belongs_to :cacheable, polymorphic: true
 
-    # todo user need not be present; this is tight coupling to McpAuth
+    # todo user need not be present; this is tight coupling to DryAuth
     # NOTE this should be removed when full testing has been done
     # The record is invlalid unless it is mapped to a user
     validates :user, presence: true #, uniqueness: true
@@ -35,7 +35,7 @@ module CacheParty
     # After the record destroy has well and truly been committed to the db, then delete the asset files
     after_commit :clear_cache, on: :destroy
 
-    # todo user need not be present; this is tight coupling to McpAuth
+    # todo user need not be present; this is tight coupling to DryAuth
     # NOTE the following delegation should not be necessary b/c this record is now storing FB ID itself
     # direct access to self.facebook_id
     #delegate :facebook_id, to: :user

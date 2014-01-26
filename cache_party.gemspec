@@ -25,6 +25,6 @@ Gem::Specification.new do |s|
 
   # added by mcp_build
   s.add_dependency 'mcp_common' #, '>= 0.12.0'
-  s.add_dependency 'mcp_auth' #, '>= 0.12.0'
+  s.add_dependency 'dry_auth' #, '>= 0.12.0'
 
 end

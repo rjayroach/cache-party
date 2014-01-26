@@ -1,5 +1,5 @@
 =begin
-The FacebookUser is totally dependent upon McpAuth for the facebook_id
+The FacebookUser is totally dependent upon DryAuth for the facebook_id
 While this is DRY, it is highly coupled, resulting in the following drawbacks:
 - cannot be tested in isolation of the Auth gem
 - an FB user can never be cached without a user record also being created...
@@ -11,7 +11,7 @@ module CacheParty
     factory :cache_party_facebook_user, class: FacebookUser do
       username "dave.tone.31"
       facebook_id "100005787840155"
-      association :user, factory: :mcp_auth_user
+      association :user, factory: :dry_auth_user
       #davetone
       #picture nil
 

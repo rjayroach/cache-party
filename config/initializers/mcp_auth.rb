@@ -12,7 +12,7 @@ Rails.application.config.to_prepare do
   # 
   # Add an association to the User model to FacebookUser
   #
-  McpAuth::User.class_eval do
+  DryAuth::User.class_eval do
     # todo conditions on this association? would be when provider.eql? 'facebook'
     has_one :facebook_user, class_name: 'CacheParty::FacebookUser', dependent: :destroy
   end
@@ -20,10 +20,10 @@ Rails.application.config.to_prepare do
 
   # 
   # Create a new CacheParty::FacebookUser when a new AuthProfile is created and the provider name is 'facebook'
-  # NOTE: The method below has knowledge of the inner workings of McpAuth User and AuthUser classes
+  # NOTE: The method below has knowledge of the inner workings of DryAuth User and AuthUser classes
   #   Specifically, it assumes that the auth_profile will have a valid reference to a user (which is reasonable)
   #
-  McpAuth::AuthProfile.class_eval do
+  DryAuth::AuthProfile.class_eval do
 
     # After saving an AuthProfile, check for an existing record of FacebookUser and create one if it doesn't exist
     after_save :facebook_user_create, if: "self.provider.eql?('facebook') and self.user.facebook_user.nil?"
@@ -32,7 +32,7 @@ Rails.application.config.to_prepare do
     # Create a FacebookUser setting the username to the uid returned from facebook
     #
     def facebook_user_create
-      Rails.logger.debug "Creating CacheParty::FacebookUser for McpAuth::User from #{ __FILE__ }\n"
+      Rails.logger.debug "Creating CacheParty::FacebookUser for DryAuth::User from #{ __FILE__ }\n"
       self.user.create_facebook_user(facebook_id: self.uid)
     end
   end

@@ -18,8 +18,10 @@ gem "jquery-rails"
 # To use debugger
 # gem 'debugger'
 #
+
 gem "mcp_common", :path => "/home/maxpub/dev/engines/mcp_common"
-gem "mcp_auth", :path => "/home/maxpub/dev/engines/mcp_auth"
+gem "dry_auth", git: 'https://github.com/rjayroach/dry-auth', branch: 'master'
+
 
 gem "thin"
 gem "mysql2"
