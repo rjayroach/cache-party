@@ -5,9 +5,9 @@ module CacheParty
   class FacebookUserJob
     include SuckerPunch::Job
   
+
     # 
     # Update attributes from FB and queue a request for the picture url
-    # TODO Use fixture data to return data in tests with valid and invalid data
     #
     def perform(id)
       begin
@@ -15,21 +15,15 @@ module CacheParty
       f = nil
       ActiveRecord::Base.connection_pool.with_connection do
         # Allow time for record to be saved to db
-        sleep 2
+        #sleep 2
         f = FacebookUser.find(id)
-
-        # TODO: Use fql
-        json_data = Koala::Facebook::API.new.get_object(f.facebook_id)
-        f.picture = Koala::Facebook::API.new.get_picture(f.facebook_id)
-
-        json_data.delete 'id'
-        json_data.delete 'facebook_id'
-        Rails.logger.debug "Updating local cache with Facebook data: #{json_data}"
-        update = f.update_attributes(json_data)
+        json_data = get_facebook_data(f)
+        update_record_with f, json_data
 
         # Perform a callback on the object which holds a reference to this cacheable object
         f.cacheable.update_from_cache(f) if f.cacheable and f.cacheable.respond_to?(:update_from_cache)
       end
+
 
       %w(n s b q).each do |size|
         f.retrieve_asset(f.image(size)) 
@@ -40,6 +34,28 @@ module CacheParty
       end
 
     end
+
+
+    private
+
+    #
+    # todo: Use fql
+    #
+    def get_facebook_data(f)
+      koala = Koala::Facebook::API.new
+      f.picture = koala.get_picture(f.facebook_id)
+      koala.get_object(f.facebook_id)
+      #binding.pry
+    end
+
+
+    def update_record_with f, json_data
+      json_data.delete 'id'
+      json_data.delete 'facebook_id'
+      Rails.logger.debug "Updating local cache with Facebook data: #{json_data}"
+      update = f.update_attributes(json_data)
+    end
+
 
   end
 end 

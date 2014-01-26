@@ -8,9 +8,28 @@ module CacheParty
       # Update local cache with data from Facebook
       # Place a reqeust on the queue to update this object with data from Facebook
       #
-      def update_cache; "#{self.class.name}Job".constantize.new.async.perform(self.id); end
+      #def update_cache; Rails.logger.warn { "updating cache" }; "#{self.class.name}Job".constantize.new.async.perform(self.id); end
       #def update_cache; "#{self.class.name}Job".constantize.new.perform(self.id); end
   
+    def update_cache_on_create
+      Rails.logger.warn { "updating cache" }
+      "#{self.class.name}Job".constantize.new.async.perform(self.id)
+      Rails.logger.warn { "after updating cache" }
+    end
+
+
+    # 
+    # Update the cache record on any type of update to it
+    #   which means that the after_commit callback needs to be disabled
+    #   or there will be an infinite recurssion generated
+    #
+    def update_cache_on_persisted
+      FacebookUser.skip_callback(:commit, :after, :update_cache_on_persisted)
+      "#{self.class.name}Job".constantize.new.async.perform(self.id)
+      FacebookUser.set_callback(:commit, :after, :update_cache_on_persisted)
+    end
+
+
   
       #
       # List all locally cached assets associated with this record
@@ -30,6 +49,7 @@ module CacheParty
 
       #
       # After the record destroy has well and truly been committed to the db, then delete the asset files
+      # NOTE This method gits hit on *every* commit (destroy AND SAVE)
       #
       def clear_cache
         self.list_cache unless self.cache_list

@@ -1,15 +1,32 @@
 require 'spec_helper'
 
+=begin
+      # NOTE: If we run the commit callbacks (:update_cache) then:
+      # 1) run the test with job: true
+      it "fails to create a duplicate username", job: true do
+        # 2) run the commit, etc. inside a VCR block
+        # and 3) run_callbacks(:commit) must be called manually to trigger the callback
+        VCR.use_cassette("facebook/davetone_basic") do
+          subject.save
+          subject.run_callbacks(:commit)
+        end
+      end
+      # NOTE: otherwise the commit callback(s) won't be run
+=end
+
 module CacheParty
   describe FacebookUser do
 
-    subject { build(:cache_party_facebook_user) }
-    
+    subject { build(:cache_party_facebook_user, :davetone_basic) }
+
     it "has a valid factory" do
-      expect(build(:cache_party_facebook_user)).to be_valid
+      expect(subject).to be_valid
     end
 
+
     describe "Validations" do
+      # NOTE the test for user should be removed when the model is fully decoupled from McpAuth
+      #%w().each do |attr|
       %w(user).each do |attr|
         it "requires #{attr}" do
           subject.send("#{attr}=", nil)
@@ -19,9 +36,8 @@ module CacheParty
       end
 
       it "fails to create a duplicate username" do
-        subject.username = 'test'
         subject.save
-        dup = build(:cache_party_facebook_user, username: 'test')
+        dup = build(:cache_party_facebook_user, :davetone_basic)
         expect(dup).to_not be_valid
       end
 
@@ -37,19 +53,43 @@ module CacheParty
       end
     end
 
-    describe "#after_create" do
-      it "calls update_cache on new record" do
-        subject.should_receive(:update_cache)
-        subject.save
+
+    describe "#update_cache_on_create" do 
+
+      describe "on create" do #, skip: true do
+        it "is called once" do
+          subject.should_receive(:update_cache_on_create).once
+          subject.save
+          subject.run_callbacks(:commit)
+        end
+        it "updates the record from FB", job: true do
+          VCR.use_cassette("facebook/davetone_basic") do
+            expect(subject.locale).to be_nil
+            subject.save
+            subject.run_callbacks(:commit)
+            expect(subject.reload.locale).to eq('en_US')
+          end
+        end
       end
-      it "calls update_cache on save only once" do
-        expect{ subject.save }.to change{ SuckerPunch::Queue.new(:FacebookUser).jobs.size }.by(1)
-        expect{ subject.save }.to change{ SuckerPunch::Queue.new(:FacebookUser).jobs.size }.by(0)
-      end
-      it "does not call update_cache on change of another field" do
-        subject.save
-        subject.link = "something_else"
-        expect{ subject.save }.to change{ SuckerPunch::Queue.new(:FacebookUser).jobs.size }.by(0)
+
+      describe "on update" do #, skip: true do
+        it "is called once" do
+          subject.should_receive(:update_cache_on_create).twice
+          subject.save
+          subject.run_callbacks(:commit)
+          subject.reload.update_attributes(locale: nil)
+          subject.run_callbacks(:commit)
+        end
+        it "does NOT update the record from FB", job: true do
+          VCR.use_cassette("facebook/davetone_basic") do
+            subject.save
+            subject.run_callbacks(:commit)
+            subject.reload.update_attributes(locale: nil)
+            expect(subject.locale).to be_nil
+            subject.run_callbacks(:commit)
+            expect(subject.reload.locale).to be_nil
+          end
+        end
       end
     end
 
