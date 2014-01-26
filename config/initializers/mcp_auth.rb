@@ -13,7 +13,7 @@ Rails.application.config.to_prepare do
   # Add an association to the User model to FacebookUser
   #
   McpAuth::User.class_eval do
-    # TODO: conditions on this association? would be when provider.eql? 'facebook'
+    # todo conditions on this association? would be when provider.eql? 'facebook'
     has_one :facebook_user, class_name: 'CacheParty::FacebookUser', dependent: :destroy
   end
 
@@ -33,7 +33,7 @@ Rails.application.config.to_prepare do
     #
     def facebook_user_create
       Rails.logger.debug "Creating CacheParty::FacebookUser for McpAuth::User from #{ __FILE__ }\n"
-      self.user.create_facebook_user
+      self.user.create_facebook_user(facebook_id: self.uid)
     end
   end
 

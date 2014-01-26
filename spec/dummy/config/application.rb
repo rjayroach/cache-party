@@ -17,7 +17,7 @@ module Dummy
     config.action_mailer.default_url_options = { :host => 'localhost' }
 
     # Use Ember's dev js
-    config.ember.variant = :development
+    #config.ember.variant = :development
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130918163360) do
+ActiveRecord::Schema.define(:version => 20131005150929) do
 
   create_table "cache_party_facebook_applications", :force => true do |t|
     t.string   "app_id"
@@ -86,10 +86,114 @@ ActiveRecord::Schema.define(:version => 20130918163360) do
     t.datetime "updated_time"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "facebook_id"
   end
 
   add_index "cache_party_facebook_users", ["cacheable_id"], :name => "index_mcp_ext_facebook_users_on_cacheable_id"
   add_index "cache_party_facebook_users", ["cacheable_type"], :name => "index_mcp_ext_facebook_users_on_cacheable_type"
   add_index "cache_party_facebook_users", ["user_id"], :name => "index_mcp_ext_facebook_users_on_user_id"
+
+  create_table "mcp_auth_auth_profiles", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "oauth_token"
+    t.datetime "oauth_expires_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "mcp_auth_auth_profiles", ["user_id"], :name => "index_mcp_auth_auth_profiles_on_user_id"
+
+  create_table "mcp_auth_users", :force => true do |t|
+    t.string   "email",                :default => "", :null => false
+    t.string   "username",             :default => "", :null => false
+    t.string   "encrypted_password",   :default => "", :null => false
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",        :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "authentication_token"
+    t.string   "locale"
+    t.string   "time_zone"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "mcp_auth_users", ["authentication_token"], :name => "index_mcp_auth_users_on_authentication_token", :unique => true
+  add_index "mcp_auth_users", ["email"], :name => "index_mcp_auth_users_on_email", :unique => true
+  add_index "mcp_auth_users", ["username"], :name => "index_mcp_auth_users_on_username", :unique => true
+
+  create_table "mcp_auth_users_roles", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+  end
+
+  add_index "mcp_auth_users_roles", ["user_id", "role_id"], :name => "index_mcp_auth_users_roles_on_user_id_and_role_id"
+
+  create_table "mcp_common_app_configs", :force => true do |t|
+    t.string   "environment"
+    t.text     "settings"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "mcp_common_contacts", :force => true do |t|
+    t.string   "value"
+    t.integer  "contactable_id"
+    t.string   "contactable_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "mcp_common_locations", :force => true do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "address4"
+    t.string   "locality"
+    t.string   "region"
+    t.string   "postal_code"
+    t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.integer  "locatable_id"
+    t.string   "locatable_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  create_table "mcp_common_people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "personable_id"
+    t.string   "personable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "mcp_common_users", :force => true do |t|
+    t.integer  "mcp_auth_user_id"
+    t.string   "locale"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "mcp_common_users", ["mcp_auth_user_id"], :name => "index_mcp_common_users_on_mcp_auth_user_id"
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
+  add_index "roles", ["name"], :name => "index_roles_on_name"
 
 end
