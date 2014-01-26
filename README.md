@@ -14,6 +14,6 @@ CacheParty currently supports caching of:
 
 ## Getting Started
 
-* TODO
+* TODO: example of how to setup
 
 
