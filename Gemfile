@@ -43,6 +43,8 @@ group :test do
   gem "poltergeist"
   gem "database_cleaner"
   gem "faker"
+  gem "vcr"
+  gem "webmock"
 end
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]

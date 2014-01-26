@@ -87,20 +87,28 @@ Spork.prefork do
   # Require factory files from the factories folder because factories are in a separate directory
   #Dir[File.join(ENGINE_RAILS_ROOT, "spec/factories/**/*.rb")].each {|f| require f}
 
+  require 'vcr'
 
+  VCR.configure do |config|
+    config.cassette_library_dir = File.join(ENGINE_RAILS_ROOT, "spec", "fixtures", "vcr")
+    config.hook_into :webmock
+    config.default_cassette_options = { record: :new_episodes }
+    #c.stub_with :fakeweb
+    #c.filter_sensitive_data('<WSDL>') { "http://www.webservicex.net:80/uszip.asmx?WSDL" }
+  end
 
   
   RSpec.configure do |config|
 
-    require 'sucker_punch/testing'
-    config.after do
-      SuckerPunch.reset! # => Resets the queues and jobs in the queues before each test
-    end
+    config.filter_run_excluding skip: true
+
+    # Cause all jobs to be performed synchronously
+    require 'sucker_punch/testing/inline'
 
 
     # Allow Controller Specs to pass authenticate!
     # See: https://github.com/plataformatec/devise/wiki/How-To%3a-Controllers-and-Views-tests-with-Rails-3-(and-rspec)
-    config.include Devise::TestHelpers, :type => :controller
+    config.include Devise::TestHelpers, type: :controller
 
     # Include Factory Girl syntax to simplify calls to factories
     config.include FactoryGirl::Syntax::Methods
@@ -138,24 +146,31 @@ Spork.prefork do
     # rr - Changes to enable request specs with capybara to test JS and accurately report database results
     # See: http://railscasts.com/episodes/257-request-specs-and-capybara?view=asciicast
     config.use_transactional_fixtures = false
+
     config.before(:suite) do
-      # Tell DatabaseCleaner where to find database.yml; otherwise it looks in ENGINE_RAILS_ROOT/config for 3rd party database config
       DatabaseCleaner.app_root = "#{ENGINE_RAILS_ROOT}spec/dummy"
-      DatabaseCleaner.strategy = :truncation
-      DatabaseCleaner[:active_record, {connection: :asterisk_test}].strategy = :truncation if Rails.configuration.database_configuration['asterisk_test']
-      DatabaseCleaner[:active_record, {connection: :asteriskcdrdb_test}].strategy = :truncation if Rails.configuration.database_configuration['asteriskcdrdb_test']
+      DatabaseCleaner.clean_with(:truncation)
     end
-    
+
+    config.before(:each) do
+      DatabaseCleaner.strategy = :transaction
+    end
+
+    config.before(:each, job: true) do
+      DatabaseCleaner.strategy = :truncation
+      #DatabaseCleaner.strategy = :deletion
+    end
+
+    config.before(:each, js: true) do
+      DatabaseCleaner.strategy = :truncation
+    end
+
     config.before(:each) do
       DatabaseCleaner.start
-      DatabaseCleaner[:active_record,{connection: :asterisk_test}].start if Rails.configuration.database_configuration['asterisk_test']
-      DatabaseCleaner[:active_record,{connection: :asteriskcdrdb_test}].start if Rails.configuration.database_configuration['asteriskcdrdb_test']
     end
-    
+
     config.after(:each) do
       DatabaseCleaner.clean
-      DatabaseCleaner[:active_record,{connection: :asterisk_test}].clean if Rails.configuration.database_configuration['asterisk_test']
-      DatabaseCleaner[:active_record,{connection: :asteriskcdrdb_test}].clean if Rails.configuration.database_configuration['asteriskcdrdb_test']
     end
 
   
@@ -190,9 +205,14 @@ Spork.each_run do
 
   # reload all the controllers
   Dir[File.join(ENGINE_RAILS_ROOT, "/app/controllers/**/*.rb")].each do |controller|
-    STDOUT.puts controller
     load controller
   end
+  
+  # reload all the jobs 
+  Dir[File.join(ENGINE_RAILS_ROOT, "/app/jobs/**/*.rb")].each do |job|
+    load job
+  end
+
   
   # reload all the models
   Dir[File.join(ENGINE_RAILS_ROOT, "/app/models/**/*.rb")].each do |model|

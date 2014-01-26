@@ -18,6 +18,13 @@ test:
   pool: 5
   timeout: 5000
 
+#test:
+#  adapter: mysql2
+#  host: localhost
+#  username: rails_mcp
+#  password: rails_mcp
+#  database: cache_party_test
+
 production:
   adapter: sqlite3
   database: db/production.sqlite3
