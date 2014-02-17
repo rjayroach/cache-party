@@ -11,6 +11,8 @@ require "sprockets/railtie"
 Bundler.require(*Rails.groups)
 require "cache_party"
 
+require 'dry_auth'
+
 module Dummy
   class Application < Rails::Application
     # for testing purposes; satisfy devise requirements; do NOT use in production
