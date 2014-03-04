@@ -15,7 +15,7 @@ GIT
 PATH
   remote: .
   specs:
-    cache_party (0.14.1)
+    cache_party (1.0.0)
       dry_auth
       koala
       mcp_common

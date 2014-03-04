@@ -9,5 +9,5 @@ Additional labels for pre-release and build metadata are available as extensions
 =end
 
 module CacheParty
-  VERSION = "0.14.1"
+  VERSION = "1.0.0"
 end
