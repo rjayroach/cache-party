@@ -55,11 +55,11 @@ module CacheParty
 
 
     describe "#update_cache_on_create" do 
-      describe "on create" do #, skip: true do
+      describe "on create" do
         it "is called once" do
           subject.should_receive(:update_cache_on_create).once
           subject.save
-          subject.run_callbacks(:commit)
+          subject.run_callbacks(:commit) # needs to be triggered manually
         end
         it "updates the record from FB", job: true do
           VCR.use_cassette("facebook/davetone_basic") do
@@ -71,7 +71,7 @@ module CacheParty
         end
       end
 
-      describe "on update" do #, skip: true do
+      describe "#after_commit" do
         it "is called once" do
           subject.should_receive(:update_cache_on_create).twice
           subject.save
