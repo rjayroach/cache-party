@@ -1,4 +1,3 @@
-
 module CacheParty
 
   # The job of this model is to take a URL and populate its fields from FB using the URL
@@ -39,12 +38,27 @@ module CacheParty
     #after_commit :update_cache_on_create, on: :update, if: :url_updated?
     def url_updated?; @url_up; end
 
+    def get_facebook_data
+      koala = Koala::Facebook::API.new
+      facebook_id = koala.get_object(url)['id']
+      koala.get_object(facebook_id)
+    end
 
-    # Put the list of asset files into a var that will survive the destroy process
-    after_destroy :list_cache
 
-    # After the record destroy has well and truly been committed to the db, then delete the asset files
-    after_commit :clear_cache, on: :destroy
+    def update_record_with json_data
+      Rails.logger.debug "Updating local cache with Facebook data: #{json_data}"
+      x_cover_source_was = cover_source
+      x_cover_source_is = json_data['cover'] ? json_data['cover']['source'] : ''
+      update_attributes(
+        about: json_data['about'],
+        name: json_data['name'],
+        phone: json_data['phone'],
+        category: json_data['category'],
+        link: json_data['link'],
+        cover_source: x_cover_source_is
+      )
+    end
+
 
     def get_current_likes
       return if self.facebook_id.nil?
@@ -52,5 +66,3 @@ module CacheParty
     end
   end
 end
-
-

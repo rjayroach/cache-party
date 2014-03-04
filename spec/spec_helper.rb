@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'spork'
 
-require 'coveralls'
-Coveralls.wear!
+#require 'coveralls'
+#Coveralls.wear!
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
@@ -43,7 +43,7 @@ Spork.prefork do
   # need to restart spork for it take effect.
 
 
-
+=begin
   require 'simplecov'
   SimpleCov.start 'rails' do
     add_filter '/spec/'
@@ -57,6 +57,7 @@ Spork.prefork do
     add_group 'Mailers', 'app/mailers'
     add_group 'Views', 'app/views'
   end
+=end
 
 
   ENV["RAILS_ENV"] ||= 'test'
@@ -197,6 +198,7 @@ Spork.each_run do
   FactoryGirl.register_default_strategies
   FactoryGirl.register_default_callbacks
 
+
   # Now, re-require the factories from the 'mcp' gems installed
   Rails.application.railties.engines.collect do |e| 
     engine_name = e.class.to_s.split('::')[0]
@@ -205,7 +207,6 @@ Spork.each_run do
       Dir[File.join(dir, '/**/*.rb')].each {|f| load "#{f}" }
     end
   end
-
 
   # reload all the controllers
   Dir[File.join(ENGINE_RAILS_ROOT, "/app/controllers/**/*.rb")].each do |controller|
@@ -226,4 +227,3 @@ Spork.each_run do
   # reload routes
   Rails.application.reload_routes!
 end
-

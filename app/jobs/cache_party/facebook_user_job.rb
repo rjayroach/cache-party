@@ -1,63 +1,23 @@
-# app/workers/facebook_user_worker.rb
-
-
 module CacheParty
   class FacebookUserJob
     include SuckerPunch::Job
   
-
-    # 
-    # Update attributes from FB and queue a request for the picture url
-    #
-    def perform(id)
+    def perform id
       begin
+        ActiveRecord::Base.connection_pool.with_connection do
+          fb_user = FacebookUser.find id
+          json_data = fb_user.get_facebook_data
+          fb_user.update_record_with json_data
 
-      f = nil
-      ActiveRecord::Base.connection_pool.with_connection do
-        # Allow time for record to be saved to db
-        #sleep 2
-        f = FacebookUser.find(id)
-        json_data = get_facebook_data(f)
-        update_record_with f, json_data
-
-        # Perform a callback on the object which holds a reference to this cacheable object
-        f.cacheable.update_from_cache(f) if f.cacheable and f.cacheable.respond_to?(:update_from_cache)
-      end
-
-
-      %w(n s b q).each do |size|
-        f.retrieve_asset(f.image(size)) 
-      end
-
+          # Perform a callback on the object which holds a reference to this cacheable object
+          if fb_user.cacheable and fb_user.cacheable.respond_to?(:update_from_cache)
+            fb_user.cacheable.update_from_cache(fb_user)
+          end
+        end
       rescue Exception => msg
         Rails.logger.debug msg
       end
-
     end
-
-
-    private
-
-    #
-    # todo: Use fql
-    #
-    def get_facebook_data(f)
-      koala = Koala::Facebook::API.new
-      f.picture = koala.get_picture(f.facebook_id)
-      koala.get_object(f.facebook_id)
-      #binding.pry
-    end
-
-
-    def update_record_with f, json_data
-      json_data.delete 'id'
-      json_data.delete 'facebook_id'
-      Rails.logger.debug "Updating local cache with Facebook data: #{json_data}"
-      update = f.update_attributes(json_data)
-    end
-
 
   end
 end 
- 
-

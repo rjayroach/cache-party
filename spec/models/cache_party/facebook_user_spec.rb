@@ -55,7 +55,6 @@ module CacheParty
 
 
     describe "#update_cache_on_create" do 
-
       describe "on create" do #, skip: true do
         it "is called once" do
           subject.should_receive(:update_cache_on_create).once
