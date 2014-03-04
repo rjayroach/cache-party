@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 source "http://gems.maxcole.com"
 
-gem 'coveralls', require: false
+#gem 'coveralls', require: false
 
 # Declare your gem's dependencies in cache_party.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -46,7 +46,7 @@ group :test do
   gem "guard-spork"
   gem "guard-rspec"
   gem "rb-inotify"
-  gem "simplecov"
+  #gem "simplecov"
   gem "capybara"
   gem "poltergeist"
   gem "database_cleaner"

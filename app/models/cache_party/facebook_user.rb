@@ -1,4 +1,3 @@
-
 module CacheParty
   class FacebookUser < ActiveRecord::Base
     include CacheParty::Facebook::Helpers
@@ -28,19 +27,24 @@ module CacheParty
     #after_commit :update_cache_on_persisted, if: :persisted? # persisted? is true on :create and :update
     after_commit :update_cache_on_create, on: :create
 
-
-    # Put the list of asset files into a var that will survive the destroy process
-    after_destroy :list_cache
-
-    # After the record destroy has well and truly been committed to the db, then delete the asset files
-    after_commit :clear_cache, on: :destroy
-
-    # todo user need not be present; this is tight coupling to DryAuth
-    # NOTE the following delegation should not be necessary b/c this record is now storing FB ID itself
-    # direct access to self.facebook_id
-    #delegate :facebook_id, to: :user
-    
     validates :facebook_id, presence: true, uniqueness: true
+
+
+    def get_facebook_data
+      Rails.logger.debug { "Requesting data from Facebook for ID: #{facebook_id}" }
+      koala = Koala::Facebook::API.new
+      rval = koala.get_object(facebook_id)
+      Rails.logger.debug { "Received data from Facebook: #{rval}" }
+      rval
+    end
+
+    def update_record_with json_data
+      json_data.delete 'id'
+      json_data.delete 'facebook_id'
+      Rails.logger.debug { "Updating local cache with Facebook data: #{json_data}" }
+      update_attributes(json_data)
+    end
+
   end
 end
 
