@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 3.2.13"
+  s.add_dependency "rails", "~> 4.1.0"
+  #s.add_dependency "rails", "~> 3.2.13"
   s.add_dependency "koala"
   s.add_dependency "sucker_punch", '~> 1.0.0'
   #s.add_dependency "omniauth-facebook"
