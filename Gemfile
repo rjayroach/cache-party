@@ -1,32 +1,23 @@
 source "http://rubygems.org"
-source "http://gems.maxcole.com"
+source "http://rubygems.maxcole.com"
 
-#gem 'coveralls', require: false
 
 # Declare your gem's dependencies in cache_party.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# jquery-rails is used by the dummy application
-gem "jquery-rails"
-#gem "omniauth-facebook"
-
-
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
-
-# To use debugger
-# gem 'debugger'
-#
-gem "mcp_common"
-#gem "dry_auth"
-
-# only when these projects are in active development and impacting this project
-#gem "mcp_common", git: 'https://github.com/rjayroach/mcp_common', branch: 'master' 
+gem "mcp_common", git: 'https://github.com/rjayroach/mcp_common', branch: 'master'
 gem "dry_auth", git: 'https://github.com/rjayroach/dry-auth', branch: 'master'
+
+
+# jquery-rails is used by the dummy application
+gem "jquery-rails"
+#gem "omniauth-facebook"
 
 
 gem "thin"
@@ -42,8 +33,6 @@ end
 
 group :test do
   gem "timecop"
-  gem "spork"
-  gem "guard-spork"
   gem "guard-rspec"
   gem "rb-inotify"
   #gem "simplecov"
