@@ -50,6 +50,7 @@ module CacheParty
       x_cover_source_was = cover_source
       x_cover_source_is = json_data['cover'] ? json_data['cover']['source'] : ''
       update_attributes(
+        facebook_id: json_data['id'],
         about: json_data['about'],
         name: json_data['name'],
         phone: json_data['phone'],

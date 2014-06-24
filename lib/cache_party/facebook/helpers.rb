@@ -18,7 +18,7 @@ module CacheParty
         koala = Koala::Facebook::API.new
         begin
           koala.send("get_#{type.to_s}", self.facebook_id, opts, &block)
-        rescue Koala::Facebook::ClientError
+        rescue Koala::Facebook::ClientError => e
           Rails.logger.warn("Failed to retrieve asset for #{self.class.name} with id #{self.id}")
           ''
         end
