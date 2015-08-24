@@ -32,7 +32,11 @@ module CacheParty
 
     def get_facebook_data
       Rails.logger.debug { "Requesting data from Facebook for ID: #{facebook_id}" }
-      koala = Koala::Facebook::API.new
+      app = FanClub::AppConfig.first.facebook_application
+      oauth = Koala::Facebook::OAuth.new(app.app_id, app.app_secret)
+      token = oauth.get_app_access_token
+      koala = Koala::Facebook::API.new(token)
+      # koala = Koala::Facebook::API.new
       rval = koala.get_object(facebook_id)
       Rails.logger.debug { "Received data from Facebook: #{rval}" }
       rval

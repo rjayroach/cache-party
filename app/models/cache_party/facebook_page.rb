@@ -38,8 +38,12 @@ module CacheParty
     #after_commit :update_cache_on_create, on: :update, if: :url_updated?
     def url_updated?; @url_up; end
 
+    # https://graph.facebook.com/oauth/access_token?client_id=186154121426591&client_secret=0c04398479696092c37ac4ccf24ccbc5&grant_type=client_credentials
     def get_facebook_data
-      koala = Koala::Facebook::API.new
+      app = FanClub::AppConfig.first.facebook_application
+      oauth = Koala::Facebook::OAuth.new(app.app_id, app.app_secret)
+      token = oauth.get_app_access_token
+      koala = Koala::Facebook::API.new(token) #, app_secret)
       facebook_id = koala.get_object(url)['id']
       koala.get_object(facebook_id)
     end

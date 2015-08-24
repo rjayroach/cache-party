@@ -15,7 +15,11 @@ module CacheParty
       end
 
       def url_for type, opts = {}, &block
-        koala = Koala::Facebook::API.new
+        app = FanClub::AppConfig.first.facebook_application
+        oauth = Koala::Facebook::OAuth.new(app.app_id, app.app_secret)
+        token = oauth.get_app_access_token
+        koala = Koala::Facebook::API.new(token) #, app_secret)
+        #koala = Koala::Facebook::API.new
         begin
           koala.send("get_#{type.to_s}", self.facebook_id, opts, &block)
         rescue Koala::Facebook::ClientError => e
